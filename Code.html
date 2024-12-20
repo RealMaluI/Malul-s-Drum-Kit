@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malul's Drum Kit</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Malul's Drum Kit</h1>
+    <div class="drum-container">
+        <!-- Top row -->
+        <div class="row">
+            <div class="drum" data-key="E">E</div>
+            <div class="drum" data-key="R">R</div>
+            <div class="drum" data-key="T">T</div>
+            <div class="drum" data-key="Y">Y</div>
+            <div class="drum" data-key="U">U</div>
+            <div class="drum" data-key="I">I</div>
+            <div class="drum" data-key="O">O</div>
+        </div>
+        <!-- Middle row -->
+        <div class="row">
+            <div class="drum" data-key="D">D</div>
+            <div class="drum" data-key="F">F</div>
+            <div class="drum" data-key="G">G</div>
+            <div class="drum" data-key="H">H</div>
+            <div class="drum" data-key="J">J</div>
+            <div class="drum" data-key="K">K</div>
+        </div>
+        <!-- Bottom row -->
+        <div class="row">
+            <div class="drum" data-key="Z">Z</div>
+            <div class="drum" data-key="X">X</div>
+            <div class="drum" data-key="C">C</div>
+            <div class="drum" data-key="V">V</div>
+            <div class="drum" data-key="B">B</div>
+            <div class="drum" data-key="N">N</div>
+            <div class="drum" data-key="M">M</div>
+        </div>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="sound-E" src="C:\Users\RealMalul\Downloads\rock-crash-cymbal-one-shot_C_minor.wav"></audio>
+    <audio id="sound-R" src="tom.mp3"></audio>
+    <audio id="sound-T" src="C:\Users\RealMalul\Downloads\trap-drum-cymbal_120bpm.wav"></audio>
+    <audio id="sound-Y" src="C:\Users\RealMalul\Downloads\drum-one-shot-ride-cymbal.wav"></audio>
+    <audio id="sound-U" src="C:\Users\RealMalul\Downloads\jazz-ride.wav"></audio>
+    <audio id="sound-I" src="C:\Users\RealMalul\Downloads\rock-crash-cymbal-one-shot_C_minor.wav"></audio>
+    <audio id="sound-O" src="C:\Users\RealMalul\Downloads\ride-crash.wav"></audio>
+    <audio id="sound-D" src="C:\Users\RealMalul\Downloads\bomb-tom-1.wav"></audio>
+    <audio id="sound-F" src="C:\Users\RealMalul\Downloads\bomb-tom-2.wav"></audio>
+    <audio id="sound-G" src="C:\Users\RealMalul\Downloads\bomb-tom-3.wav"></audio>
+    <audio id="sound-H" src="C:\Users\RealMalul\Downloads\bomb-tom-4_E_major.wav"></audio>
+    <audio id="sound-J" src="C:\Users\RealMalul\Downloads\bomb-tom-5_F_minor.wav"></audio>
+    <audio id="sound-K" src="C:\Users\RealMalul\Downloads\bomb-tom-6.wav"></audio>
+    <audio id="sound-Z" src="C:\Users\RealMalul\Downloads\one-shot-drum-open-hi-hat_G_minor.wav"></audio>
+    <audio id="sound-X" src="C:\Users\RealMalul\Downloads\one-shot-drum-open-hi-hat_G_minor.wav"></audio>
+    <audio id="sound-C" src="C:\Users\RealMalul\Downloads\tr808-snare-drum-241403.mp3"></audio>
+    <audio id="sound-V" src="C:\Users\RealMalul\Downloads\tr808-snare-drum-241403.mp3"></audio> <!-- V uses C's sound -->
+    <audio id="sound-B" src="C:\Users\RealMalul\Downloads\kick-drum-263837.mp3"></audio>
+    <audio id="sound-N" src="C:\Users\RealMalul\Downloads\hi-hat-231042.mp3"></audio>
+    <audio id="sound-M" src="tom.mp3"></audio>
+
+    <script>
+        const drums = document.querySelectorAll('.drum');
+        const activeKeys = new Set();
+
+        // Key-to-Sound Mapping
+        const soundMap = {
+            E: 'sound-E',
+            R: 'sound-R',
+            T: 'sound-T',
+            Y: 'sound-Y',
+            U: 'sound-U',
+            I: 'sound-I',
+            O: 'sound-O',
+            D: 'sound-D',
+            F: 'sound-F',
+            G: 'sound-G',
+            H: 'sound-H',
+            J: 'sound-J',
+            K: 'sound-K',
+            Z: 'sound-Z',
+            X: 'sound-N', // X uses N's sound
+            C: 'sound-C',
+            V: 'sound-V', // V uses C's sound
+            B: 'sound-B',
+            N: 'sound-N',
+            M: 'sound-M'
+        };
+
+        // Event Listeners for Buttons
+        drums.forEach(drum => {
+            drum.addEventListener('click', () => {
+                playSound(drum.dataset.key);
+                activateButton(drum);
+            });
+        });
+
+        // Handle Keyboard Input
+        document.addEventListener('keydown', (event) => {
+            const key = event.key.toUpperCase();
+            if (!activeKeys.has(key)) {
+                activeKeys.add(key);
+                playSound(key);
+                const drum = document.querySelector(`.drum[data-key="${key}"]`);
+                if (drum) activateButton(drum);
+            }
+        });
+
+        document.addEventListener('keyup', (event) => {
+            activeKeys.delete(event.key.toUpperCase());
+        });
+
+        // Play Sound Function
+        function playSound(key) {
+            const audioId = soundMap[key];
+            if (audioId) {
+                const audio = document.getElementById(audioId);
+                audio.currentTime = 0; // Rewind to start
+                audio.play();
+            }
+        }
+
+        // Button Animation
+        function activateButton(drum) {
+            drum.classList.add('active');
+            setTimeout(() => {
+                drum.classList.remove('active');
+            }, 100);
+        }
+    </script>
+</body>
+</html>
